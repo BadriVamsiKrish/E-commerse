@@ -3,16 +3,34 @@ import { Badge, Button } from 'react-bootstrap';
 import ArrayItem from './items/ArrayItem';
 import Cart from './Cart';
 //import Modal from './UI/Modal';
+import Store from './Store';
+import Navigation from './Navigation';
+import { BrowserRouter ,Routes,Route} from 'react-router-dom';
+import Home from './Home';
+import About from './About';
 export const store=React.createContext();
+
 
 const App = () => {
   const[cart,setCart]=useState([]);
   const[showcart,setShowcart]=useState(false);
   return (
     <store.Provider value={[cart,setCart,showcart,setShowcart]}>
-      <h1 style={{backgroundColor:'green',color:'white',textAlign:'center'}}>E-commerce website   <Button variant='warning'onClick={()=>{console.log('clicked');setShowcart(!showcart);console.log(showcart)}}>cart<h2><Badge bg='dark'>{cart.length}</Badge></h2></Button></h1>
+      <BrowserRouter>
+      <Navigation/>
+      <Routes> 
+        <Route path='/' exact Component={Home}/>
+        <Route path='/store' exact Component={Store}/>
+        <Route path='/about' exact Component={About}/>
+        </Routes>
+      
+      </BrowserRouter>
+      {/* <Store/> */}
+
+      {/* <h1 style={{backgroundColor:'green',color:'white',textAlign:'center'}}>E-commerce website   <Button variant='warning'onClick={()=>{console.log('clicked');setShowcart(!showcart);console.log(showcart)}}>cart<h2><Badge bg='dark'>{cart.length}</Badge></h2></Button></h1>
       {showcart && <Cart/>}
-      <ArrayItem/>
+      <ArrayItem/> */}
+
     </store.Provider>
   )
 }
