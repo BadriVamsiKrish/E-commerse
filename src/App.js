@@ -31,7 +31,7 @@
 
 
 // export default App;
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -39,6 +39,27 @@ import './App.css';
 function App() {
   const[movies,setMovies]=useState([]);
   const[loading,setLoading]=useState(false);
+  useEffect(()=>{
+    async function fetchmovieshandler(){
+      setLoading(true);
+      const responce=await fetch('https://swapi.dev/api/films/');
+      const data=await responce.json();
+  
+      const transformedmovies=data.results.map((movieData)=>{
+        return {id:movieData.episode_id,
+          title:movieData.title,
+          openingText:movieData.opening_crawl,
+          releseDate:movieData.relese_date,
+  
+      };})
+      setMovies(transformedmovies);
+      setLoading(false);
+      console.log(transformedmovies);
+      
+    }
+
+    fetchmovieshandler();
+  },[])
   async function fetchmovieshandler(){
     setLoading(true);
     const responce=await fetch('https://swapi.dev/api/films/');
