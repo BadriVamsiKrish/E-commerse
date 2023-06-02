@@ -34,48 +34,58 @@
 import React, { useState,useEffect } from 'react';
 
 import MoviesList from './components/MoviesList';
+import AddMovie from './components/AddMovie';
 import './App.css';
+import axios from 'axios';
 
 function App() {
   const[movies,setMovies]=useState([]);
   const[loading,setLoading]=useState(false);
   useEffect(()=>{
-    async function fetchmovieshandler(){
-      setLoading(true);
-      const responce=await fetch('https://swapi.dev/api/films/');
-      const data=await responce.json();
+    // async function fetchmovieshandler(){
+    //   setLoading(true);
+    //   const responce=await fetch('https://swapi.dev/api/films/');
+    //   const data=await responce.json();
   
-      const transformedmovies=data.results.map((movieData)=>{
-        return {id:movieData.episode_id,
-          title:movieData.title,
-          openingText:movieData.opening_crawl,
-          releseDate:movieData.relese_date,
+    //   const transformedmovies=data.results.map((movieData)=>{
+    //     return {id:movieData.episode_id,
+    //       title:movieData.title,
+    //       openingText:movieData.opening_crawl,
+    //       releseDate:movieData.relese_date,
   
-      };})
-      setMovies(transformedmovies);
-      setLoading(false);
-      console.log(transformedmovies);
+    //   };})
+    //   setMovies(transformedmovies);
+    //   setLoading(false);
+    //   console.log(transformedmovies);
       
-    }
+    // }
 
     fetchmovieshandler();
-  },[])
+  },[]);
   async function fetchmovieshandler(){
     setLoading(true);
-    const responce=await fetch('https://swapi.dev/api/films/');
-    const data=await responce.json();
+    const responce=await axios.get('https://react-http-f171e-default-rtdb.firebaseio.com/movies.json');
+    const data= new Array(responce.data);
+    //const data=await responce;
 
-    const transformedmovies=data.results.map((movieData)=>{
-      return {id:movieData.episode_id,
-        title:movieData.title,
-        openingText:movieData.opening_crawl,
-        releseDate:movieData.relese_date,
-
-    };})
-    setMovies(transformedmovies);
-    setLoading(false);
-    console.log(transformedmovies);
+    console.log((data));
     
+    const transformedMovies = Object.keys(data[0]).map((movieId) => {
+      const movie = data[0][movieId];
+    
+      return {
+        id: movieId,
+        title: movie.Title,
+        openingText: movie.OpeningText,
+        releaseDate: movie.ReleseDate
+      };
+    });
+    
+    //console.log(transformedMovies);
+    setMovies(transformedMovies);
+    setLoading(false);
+    console.log(transformedMovies);
+
   }
   //fetchmovieshandler();
   // const dummyMovies = [
@@ -96,6 +106,9 @@ function App() {
   return (
     <React.Fragment>
       <section>
+        <div>
+        <AddMovie/>
+        </div>
         <button onClick={fetchmovieshandler}>Fetch Movies</button>
       </section>
       <section>
