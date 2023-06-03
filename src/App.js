@@ -107,7 +107,7 @@ function App() {
     <React.Fragment>
       <section>
         <div>
-        <AddMovie/>
+        <AddMovie fetchmov={fetchmovieshandler}/>
         </div>
         <button onClick={fetchmovieshandler}>Fetch Movies</button>
       </section>
