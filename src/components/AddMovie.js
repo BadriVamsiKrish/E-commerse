@@ -15,8 +15,6 @@ const AddMovie = () => {
     setTitle('');
     setOpeningText('');
     setReleseDate('');
-    
-
   }
   return (
     <div style={{border:'5px inset blue',backgroundColor:'aqua',borderRadius:'20px'}}>
